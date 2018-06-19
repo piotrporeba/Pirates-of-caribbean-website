@@ -1,0 +1,23 @@
+
+    <!-- login / logout -->
+    <section>
+        <?php
+        //----------------------------
+        if($isLoggedIn):
+            //----------------------------
+            ?><div id="login">
+            logged in as: <strong><?= $username ?></strong>
+            <br>
+            <a href="/index.php?action=logout">(logout)</a></div>
+            <?php
+        //----------------------------
+        else:
+            //----------------------------
+            ?>
+            <a href="/index.php?action=login">login</a>
+            <?php
+            //----------------------------
+        endif;
+        //----------------------------
+        ?>
+    </section>

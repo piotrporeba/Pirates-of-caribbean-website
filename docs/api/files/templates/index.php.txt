@@ -1,0 +1,70 @@
+<?php
+$pageTitle = 'Home Page';
+
+$indexLinkStyle = 'current';
+
+require_once __DIR__ . '/header.php';
+?>
+
+<h1> <em>Home Page</em> </h1>
+
+
+<div id="section">
+
+<h2><em>The leader in fitness!</em></h2>
+<p>
+The Powerhouse Gym name and brand has been one of the top leaders in the fitness industry for over 35 years.
+With 300 licensees in 39 states, Powerhouse has continued to steadily gain global attention by expanding
+into 17 different countries worldwide. The first Powerhouse Gym still stands in its original location
+and celebrated its 35th anniversary in 2010.<br>
+
+The Powerhouse Gym name and logo provides its gyms instant recognition and credibility associated with
+an internationally registered trademark and service mark symbolic with quality in the health and fitness
+industry.<br>
+
+Today, Powerhouse Gyms International is in the midst of tremendous growth and expansion.
+One reason for this surge in membership and facilities has been Powerhouse Gym's ability to not only
+accommodate the conditioned market, but to also attract mainstream consumers and fitness enthusiast by
+providing excellent fitness facilities.<br>
+
+The famous muscleman logo is a sign of credibility across the country and is a testament of where this
+company began. The Powerhouse Gym Trademark is associated with service and quality, and is apparent
+throughout each and every Powerhouse Gym that opens its doors to over 1.5 million dedicated members.<br>
+
+It is not uncommon to see an A-list celebrity training at Powerhouse Gym, including such stars as Arnold Schwarzenegger,
+Cameron Diaz, John Travolta, Jerome "The Bus" Bettis, Alex Rodriguez, Mike Tyson and Dwayne "The Rock"
+Johnson, to name a few.<br>
+</p>
+
+<div> <img id="slideshow" src="images/gym1.jpg" alt="slideshow"></div>
+</div>
+
+<div id="sideb">
+<h2> <em>The History</em> </h2>
+<p>
+Founded in 1975 by brothers, William and Norman Dabish, the health club chain, which began as a single
+inner-city establishment in Highland Park, Michigan, has grown into one of the most well-known and well
+respected health club organizations in the world. The Powerhouse Gym name and brand has been one of the
+top leaders in the fitness industry for over 35 years. With 300 licensees in 39 states, Powerhouse has
+continued to steadily gain global attention by expanding into 17 different countries worldwide.
+The first Powerhouse Gym still stands in its original location and celebrated its 35th anniversary in
+2010.<br><br>
+
+Due to the overwhelming success of its original facilities and the demand that they created for additional
+out-of-state locations, a Licensing Division was formed in 1984. Today, as stated in the recent report
+published by the health and fitness advocacy organization IHRSA, the Powerhouse Gym Trademark and Service
+Marks are amongst the most recognized brands in the health and fitness industry. Seven of every ten people
+in the United States recognize the Powerhouse Gym logo and/or insignia.<br>
+</p>
+<script src='https://maps.googleapis.com/maps/api/js?v=3.exp'></script>
+<div id="gmapoverflow">
+<div id="gmap_canvas"></div>
+<div><small><a href="http://embedgooglemaps.com">
+    embed google maps							</a>
+</small></div><div><small><a href="http://www.proxysitereviews.com/">proxy sites</a></small></div>
+</div>
+<script type='text/javascript'>function init_map(){var myOptions = {zoom:14,center:new google.maps.LatLng(53.3868127,-6.377197099999989),mapTypeId: google.maps.MapTypeId.ROADMAP};map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);marker = new google.maps.Marker({map: map,position: new google.maps.LatLng(53.3868127,-6.377197099999989)});infowindow = new google.maps.InfoWindow({content:'<strong>Powerhouse Gym</strong><br>Blanchardstown, Ireland<br>'});google.maps.event.addListener(marker, 'click', function(){infowindow.open(map,marker);});infowindow.open(map,marker);}google.maps.event.addDomListener(window, 'load', init_map);</script>
+
+</div>
+
+<?php require_once __DIR__."/footer.php" ?>

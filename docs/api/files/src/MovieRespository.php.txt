@@ -1,0 +1,24 @@
+<?php
+namespace Itb;
+
+class MovieRespository
+{
+    /**
+     * @var array
+     */
+    private $movies = [
+        [123, 'jaws II'],
+        [555, 'superman vs batman'],
+        [193, 'life with brian'],
+
+    ];
+
+    /**
+     * @return array
+     */
+    public function getAll()
+    {
+        return $this->movies;
+    }
+}
+

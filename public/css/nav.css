@@ -1,0 +1,38 @@
+
+a.button:link{
+    color: beige;
+    }
+header.a:hover{
+    color: black;
+    background-color:beige;
+    }
+a.current{
+    color: black;
+    background-color:beige;
+}   
+#nav{
+    margin-left:340px;
+    }
+
+a{
+    padding: 5px 50px;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+
+
+}
+#login{
+    color:beige;
+    float:right;
+    padding: 5px 40px;
+    border-radius: 5px;
+}
+#login1{
+    color: beige;
+}
+
+

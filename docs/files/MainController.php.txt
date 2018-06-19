@@ -1,0 +1,327 @@
+<?php
+/**
+ * main controller
+ */
+namespace Itb;
+require_once __DIR__ . '/model_functions.php';
+/*
+ * test
+ */
+/**
+ * Class MainController
+ * @package Itb
+ */
+class MainController
+{
+    /**
+     *
+     *index
+     */
+    function indexAction()
+    {
+
+        $isLoggedIn = $this->is_logged_in_from_session();
+        $username = $this->username_from_session();
+        require_once __DIR__ . '/../templates/index.php';
+    }
+
+    /**
+     *
+     *membership
+     */
+    function membershipAction()
+    {
+        $isLoggedIn = $this->is_logged_in_from_session();
+        $username = $this->username_from_session();
+        require_once __DIR__ . '/../templates/membership.php';
+    }
+
+    /**
+     *
+     *shop
+     */
+    function shopAction()
+    {
+        $isLoggedIn = $this->is_logged_in_from_session();
+        $username = $this->username_from_session();
+
+        $items = get_all_movies();
+        if($isLoggedIn) {
+            require_once __DIR__ . '/../templates/shop.php';
+        } else {
+            require_once __DIR__ . '/../templates/userShop.php';
+        }
+    }
+
+    /**
+     *
+     *contact
+     */
+    function contactusAction()
+    {
+        $isLoggedIn = $this->is_logged_in_from_session();
+        $username = $this->username_from_session();
+        require_once __DIR__ . '/../templates/contactus.php';
+    }
+
+    /**
+     *
+     *sitemap
+     */
+    function sitemapAction()
+    {
+        $isLoggedIn = $this->is_logged_in_from_session();
+        $username = $this->username_from_session();
+        require_once __DIR__ . '/../templates/sitemap.php';
+    }
+
+
+    /**
+     *
+     *show product
+     */
+    function show_one_product_action()
+    {
+
+        $isLoggedIn = $this->is_logged_in_from_session();
+        $username = $this->username_from_session();
+        $connection = connect_to_db();
+
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        $product = get_one_product($connection, $id);
+
+        if (null == $product) {
+            $message = 'sorry, no product with id = ' . $id . ' could be retrieved from the database';
+
+            // output the detail of product in HTML table
+            require_once __DIR__ . '/../templates/message.php';
+        } else {
+            // output the detail of product in HTML table
+            require_once __DIR__ . '/../templates/detail.php';
+        }
+    }
+
+    /**
+     * buy product function
+     *
+     */
+    function buy_one_product_action()
+    {
+
+        $isLoggedIn = $this->is_logged_in_from_session();
+        $username = $this->username_from_session();
+        $connection = connect_to_db();
+
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        $product = get_one_product($connection, $id);
+
+        if (null == $product) {
+            $message = 'sorry, no product with id = ' . $id . ' could be retrieved from the database';
+
+            // output the detail of product in HTML table
+            require_once __DIR__ . '/../templates/message.php';
+        } else {
+            // open buying form
+            require_once __DIR__ . '/../templates/buy.php';
+        }
+    }
+
+    /**
+     *
+     *delete product
+     */
+    function delete_product_action()
+    {
+        $isLoggedIn = $this->is_logged_in_from_session();
+        $username = $this->username_from_session();
+        $connection = connect_to_db();
+
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        $success = delete_product($connection, $id);
+
+        if ($success) {
+            $message = 'SUCCESS - product with id = ' . $id . ' was deleted';
+        } else {
+            $message = 'sorry, product with id = ' . $id . ' could not be deleted';
+        }
+
+        require_once __DIR__ . '/../templates/message.php';
+    }
+
+    /**
+     *
+     *show new product form
+     */
+    public function show_new_product_form_action()
+    {
+        $isLoggedIn = $this->is_logged_in_from_session();
+        $username = $this->username_from_session();
+        require_once __DIR__ . '/../templates/new_product_form.php';
+    }
+
+    /**
+     *
+     *create product
+     */
+    public function create_product_action()
+    {
+        $isLoggedIn = $this->is_logged_in_from_session();
+        $username = $this->username_from_session();
+        $connection = connect_to_db();
+        $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
+        $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+        $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT);
+        $stockQuantity = filter_input(INPUT_POST, 'stockQuantity', FILTER_SANITIZE_NUMBER_INT);
+        $picture = filter_input(INPUT_POST, 'picture', FILTER_SANITIZE_STRING);
+
+
+        $success = create_product($connection, $title, $description, $price, $stockQuantity, $picture);
+
+        if ($success) {
+            $id = $connection->lastInsertId();
+            $message = "SUCCESS - new product with ID = $id created";
+        } else {
+            $message = 'sorry, there was a problem creating new product';
+        }
+
+        require_once __DIR__ . '/../templates/message.php';
+    }
+
+    /**
+     *
+     *show update
+     */
+    function show_update_product_form_action()
+    {
+        $isLoggedIn = $this->is_logged_in_from_session();
+        $username = $this->username_from_session();
+        $connection = connect_to_db();
+
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        $item  = get_one_product($connection, $id);
+
+        require_once __DIR__ . '/../templates/update_product_form.php';
+    }
+
+    /**
+     *
+     *update product
+     */
+    function update_product_action()
+    {
+        $isLoggedIn = $this->is_logged_in_from_session();
+        $username = $this->username_from_session();
+        $connection = connect_to_db();
+
+        $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+        $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
+        $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+        $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT);
+        $stockQuantity = filter_input(INPUT_POST, 'stockQuantity', FILTER_SANITIZE_NUMBER_INT);
+        $picture = filter_input(INPUT_POST, 'picture', FILTER_SANITIZE_STRING);
+
+
+        $success = update_product($connection, $id, $title, $description, $price, $stockQuantity, $picture);
+
+        if($success){
+            $message = "SUCCESS - new product with ID = $id updated";
+        } else {
+            $message = 'sorry, there was a problem updated the product';
+        }
+
+        require_once __DIR__ . '/../templates/message.php';
+    }
+    // LOGIN FUNCTIONS
+    /**
+     *
+     *login
+     */
+    function login_action()
+    {
+        $isLoggedIn = $this->is_logged_in_from_session();
+        $username = $this->username_from_session();
+
+        require_once __DIR__ . '/../templates/loginForm.php';
+    }
+
+    /**
+     *
+     * logout
+     */
+    function logout_action()
+    {
+        // remove 'user' element from SESSION array
+        unset($_SESSION['user']);
+
+        // redirect to index action
+        $this->indexAction();
+    }
+
+    /**
+     *
+     * process login
+     */
+    function process_login_action()
+    {
+        // default is bad login
+        $isLoggedIn = false;
+
+        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+
+        // source of this password hashing approach = PhP The Right Way (of course!)
+        // url: http://www.phptherightway.com/#password_hashing
+
+        // hashed correct password
+        $hashedCorrectPassword = password_hash('admin', PASSWORD_DEFAULT);
+
+        // decide if username/password accepted
+        if (('admin' == $username) && password_verify($password, $hashedCorrectPassword)) {
+            $isLoggedIn = true;
+        }
+
+        // action depending on login success
+        if ($isLoggedIn) {
+            // STORE login status SESSION
+            $_SESSION['user'] = $username;
+
+            require_once __DIR__ . '/../templates/loginSuccess.php';
+        } else {
+            $message = 'bad username or password, please try again';
+            require_once __DIR__ . '/../templates/message.php';
+        }
+    }
+
+    /**
+     * logged in session
+     * @return bool
+     */
+    function is_logged_in_from_session()
+    {
+        $isLoggedIn = false;
+
+        // user is logged in if there is a 'user' entry in the SESSION superglobal
+        if(isset($_SESSION['user'])){
+            $isLoggedIn = true;
+        }
+
+        return $isLoggedIn;
+    }
+
+    /**
+     * username session
+     * @return string
+     */
+    function username_from_session()
+    {
+        $username = '';
+
+        // extract username from SESSION superglobal
+        if (isset($_SESSION['user'])) {
+            $username = $_SESSION['user'];
+        }
+
+        return $username;
+    }
+
+}

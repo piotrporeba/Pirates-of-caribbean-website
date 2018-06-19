@@ -1,0 +1,146 @@
+
+<?php
+/**
+ * model functions
+ */
+
+
+/**
+ * connect
+ * @return null|PDO
+ *connection to db
+ */
+function connect_to_db()
+{
+    // DSN - the Data Source Name - requred by the PDO to connect
+    $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
+
+    // attempt to create a connection to the database
+    try {
+        $connection = new \PDO($dsn, DB_USER, DB_PASS);
+    } catch (\PDOException $e) {
+        // deal with connection error
+        print 'ERROR - there was a problem trying to create DB connection' . PHP_EOL;
+        return null;
+    }
+
+    return $connection;
+}
+
+/**
+ * get all
+ * @return array
+ * getting items from db
+ */
+function get_all_movies()
+{
+    $connection = connect_to_db();
+    // SQL query
+    $sql = 'SELECT * FROM items';
+
+    // execute query and collect results
+    $statement= $connection->query($sql);
+    $items = $statement->fetchAll();
+
+    return $items;
+}
+
+/**
+ * get
+ * @param PDO $connection
+ * @param $id
+ * @return mixed|null
+ *getting one product from db
+ */
+function get_one_product(PDO $connection, $id)
+{
+    $sql = "SELECT * FROM items WHERE id=$id";
+    $statement = $connection->query($sql);
+
+    if ($row = $statement->fetch()) {
+        return $row;
+    } else {
+        return null;
+    }
+}
+
+/**
+ * delete
+ * @param $connection
+ * @param $id
+ * @return bool
+ * deleting product
+ */
+function delete_product($connection, $id)
+{
+    $sql = "DELETE FROM items WHERE id=$id";
+
+    $numRowsAffected = $connection->exec($sql);
+
+    if($numRowsAffected > 0){
+        $queryWasSuccessful = true;
+    } else {
+        $queryWasSuccessful = false;
+    }
+
+    return $queryWasSuccessful;
+}
+
+/**
+ * create
+ * @param $connection
+ * @param $title
+ * @param $description
+ * @param $price
+ * @param $stockQuantity
+ * @return bool
+ * creating product
+ */
+function create_product($connection, $title, $description, $price, $stockQuantity)
+{
+    $sql = "INSERT into items (title, description, price, stockQuantity) VALUES ('$title', '$description', $price, $stockQuantity)";
+
+
+    $numRowsAffected = $connection->exec($sql);
+
+    // can set Boolean variable in a single statement
+    // 	$queryWasSuccessful = ($numRowsAffected > 0);
+
+    if($numRowsAffected > 0){
+        $queryWasSuccessful = true;
+    } else {
+        $queryWasSuccessful = false;
+    }
+
+    return $queryWasSuccessful;
+}
+
+/**
+ * update
+ * @param $connection
+ * @param $id
+ * @param $title
+ * @param $description
+ * @param $price
+ * @param $stockQuantity
+ * @return bool
+ *update prosuct
+ */
+function update_product($connection, $id, $title, $description, $price, $stockQuantity)
+{
+    $sql = "UPDATE items SET title ='$title', description = '$description', price = $price, stockQuantity = $stockQuantity WHERE id=$id";
+
+    $numRowsAffected = $connection->exec($sql);
+
+    // can set Boolean variable in a single statement
+    // 	$queryWasSuccessful = ($numRowsAffected > 0);
+
+    if($numRowsAffected > 0){
+        $queryWasSuccessful = true;
+    } else {
+        $queryWasSuccessful = false;
+    }
+
+    return $queryWasSuccessful;
+}
+
